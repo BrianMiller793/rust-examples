@@ -1,0 +1,6 @@
+[package]
+name = "minigrep"
+version = "0.1.0"
+authors = ["Brian Miller <5573157+BrianMiller793@users.noreply.github.com>"]
+
+[dependencies]
