@@ -27,7 +27,8 @@ are placed back on the stack.
 
 On my little laptop, for single-threaded performance,
 `time cargo run --release | wc -l` finished a 12x12 board in 0.57s,
-yielding the expected 365,596 solutions.
+yielding the expected 14,200 solutions, and a 14x14 board in 13.9s, for
+365,596 solutions.
 
 ## Rust Neophyte
 
