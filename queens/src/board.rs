@@ -1,3 +1,6 @@
+/// Chess board structure for constraint-based solution.
+///
+
 #[derive(Debug, Clone)]
 pub struct Board {
     board: Vec<char>,
@@ -14,15 +17,23 @@ impl Board {
         }
     }
 
+    /// Get the size of the chess board.
+    pub fn get_size(&mut self) -> u32 {
+        self.size
+    }
+
+    /// Check if a column is safe.
     pub fn is_safe(&mut self, column: u32) -> bool {
         self.row < self.size &&
         self.board[(self.row * self.size + column) as usize ] == ' '
     }
 
+    /// Check if the current row is the last row.
     pub fn is_end_row(&mut self) -> bool {
-        return self.row == self.size;
+        self.row == self.size
     }
 
+    /// Set a queen on the board, and mark its attack vectors.
     pub fn set_queen(&mut self, column: u32) {
         let mut x: i32;
 
@@ -57,36 +68,6 @@ impl Board {
             for y in self.row..self.size {
                 self.board[(self.size * y + column) as usize] = 'r';
             }
-        }
-    }
-}
-
-fn main() {
-    let size = 15;
-    let mut boards : Vec<Board> = Vec::new();
-
-    // init
-    for c in 0..size {
-        let mut board = Board::new(size);
-        board.set_queen(c);
-        boards.push(board);
-    }
-
-    loop {
-        if let Some(mut board) = boards.pop() {
-            for c in 0..size {
-                if board.is_safe(c) {
-                    let mut newboard = board.clone();
-                    newboard.set_queen(c);
-                    if newboard.is_end_row() == true {
-                        println!("{:?}", newboard);
-                    } else {
-                        boards.push(newboard);
-                    }
-                }
-            }
-        } else {
-            break;
         }
     }
 }
