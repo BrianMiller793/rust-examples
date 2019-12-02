@@ -5,7 +5,7 @@
 pub struct Board {
     board: Vec<char>,
     row: u32,
-    size: u32,
+    pub size: u32,
 }
 
 impl Board {

@@ -5,7 +5,7 @@ use queens::threadpool::ThreadPool;
 use std::sync::{Arc, Mutex};
 
 fn main() {
-    let size = 15;
+    let size = 16;
     let mut boards : Vec<Board> = Vec::new();
     let solved_boards = Arc::new(Mutex::new(0));
     let mut pool = ThreadPool::new(2);
@@ -35,7 +35,7 @@ fn test_set_board(board: Board, solved_boards: Arc<Mutex<i32>>) {
     boards.push(board);
 
     while let Some(mut board) = boards.pop() {
-        for c in 0..board.get_size() {
+        for c in 0..board.size {
             if board.is_safe(c) {
                 let mut newboard = board.clone();
                 newboard.set_queen(c);
