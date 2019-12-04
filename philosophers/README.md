@@ -2,6 +2,39 @@
 
 Source: Communicating Sequential Processes, by C. A. R. Hoare, May 18, 2015
 
+## Lockup error using `std::sync::Mutex`
+
+This branch is my first attempt to solve the problem, using `std::sync::Mutex`.
+The problem I found is that, on occasion, a mutex is not really released on
+destruction, or else the waiting thread is not woken up.
+
+### Example Lockup
+
+The following example shows a lockup that happened soon after starting.  A
+thread acquires both mutexes, 4 and 0.  Another thread waits on mutex 0.
+The first thread releases the mutexes.  Another thread then also waits on
+mutex 0.  The first thread goes away entirely.
+
+    X?         <-- X has no place at the table
+    X0         <-- X acquires place 0
+    T?
+    X0  4  0   <-- X is eating with 4 and 0
+    T1         <-- T in place 1
+    T1 (0)     <-- Waiting on fork 0
+    X0         <-- X's mutex locks should be destroyed right after this
+    S?         <-- S acquires place 0, previously held by X
+    S0         <-- S in place 0
+    S0  4 (0)  <-- Waiting on fork 0, but T doesn't have it
+    X-         <-- X leaves the table
+
+Philosophers T and S continue to wait for fork 0.  The other philosophers
+come, eat, and leave, but these two are stuck because the fork has gone
+missing.
+
+The test for this is: `for i in {0..1000}; do cargo run; done`
+
+At some point during the run, the program will lock up.
+
 ## Example: The Dining Philosophers, p. 55
 
 For Hoare's example of concurrency, a group shares a dining table.  Each
