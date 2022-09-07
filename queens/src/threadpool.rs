@@ -7,7 +7,7 @@ trait FnBox {
     fn call_box(self: Box<Self>);
 }
 
-type Job = Box<FnBox + Send + 'static>;
+type Job = Box<dyn FnBox + Send + 'static>;
 
 enum Message {
     NewJob(Job),
