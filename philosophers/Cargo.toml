@@ -4,4 +4,4 @@ version = "0.1.0"
 authors = ["Brian Miller <bmiller@impinj.com>"]
 
 [dependencies]
-parking_lot = "0.9"
+parking_lot = "0.12.1"
